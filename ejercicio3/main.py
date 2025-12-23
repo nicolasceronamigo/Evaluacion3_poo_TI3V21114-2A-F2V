@@ -72,8 +72,8 @@ menu_venta.agregar_opcion(2, "Seleccionar medio de pago", menu_pago.ciclo_menu)
 
 menu_pago.agregar_opcion(0, "Salir", menu_pago.salir)
 menu_pago.agregar_opcion(1, "Billetera Digital", menu_pago.venta_b_digital)
-menu_pago.agregar_opcion(2, "Tarjeta", menu_pago.venta_sin_confirmacion)
-menu_pago.agregar_opcion(3, "Transferencia", menu_pago.venta_sin_confirmacion)
+menu_pago.agregar_opcion(2, "Tarjeta", menu_pago.venta_tarjeta)
+menu_pago.agregar_opcion(3, "Transferencia", menu_pago.venta_transferencia)
 
 menu_reporte.agregar_opcion(0, "Salir", menu_reporte.salir)
 menu_reporte.agregar_opcion(1, "Reporte Final", menu_reporte.reporte_final)
