@@ -30,12 +30,13 @@ menu_medicion = MenuMedicion("Menú medición", sistema1)
 
 menu_principal.agregar_opcion(0, "Salir", menu_principal.salir)
 menu_principal.agregar_opcion(1, "Menú reporte", menu_reporte.ciclo_menu)
-menu_principal.agregar_opcion(2, "Menú medidiciones", menu_medicion.ciclo_menu)
+menu_principal.agregar_opcion(2, "Menú mediciones", menu_medicion.ciclo_menu)
 
 menu_reporte.agregar_opcion(0, "Salir", menu_reporte.salir)
 menu_reporte.agregar_opcion(1, "Generar reporte", menu_reporte.generar_reporte)
 
 menu_medicion.agregar_opcion(0, "Salir", menu_medicion.salir)
 menu_medicion.agregar_opcion(1, "Generar mediciones", menu_medicion.generar_mediciones)
+menu_medicion.agregar_opcion(2, "Generar medición en sensor", menu_medicion.generar_mediciones_sensor)
 
 menu_principal.ciclo_menu()

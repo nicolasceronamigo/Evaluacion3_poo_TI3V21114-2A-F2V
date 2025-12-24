@@ -52,11 +52,13 @@ class Sistema:
                     sensor.medir_unidad()
         return f"Mediciones realizadas en sensores: {num_lect * 3}"
     
-    def generar_num_lecturas_dicc(self, num_lect: int, id_sensor_sis: int):#<-----arreglar o eliminar
-        if id_sensor_sis in self.__dicc_sensores.keys():
-            for i in range(num_lect):
-                self.__dicc_sensores[str(id_sensor_sis)].medir_unidad(self)
-            return f"Mediciones realizadas en sensor {id_sensor_sis}"
+    def generar_num_lecturas_sensor(self, num_lect: int, id_sensor_sis: int):
+        lista_dicc = [self.__dicc_sensores_temp, self.__dicc_sensores_hum, self.__dicc_sensores_mov]
+        for dicc_sensor in lista_dicc:
+            if str(id_sensor_sis) in dicc_sensor.keys():
+                for i in range(num_lect):
+                    dicc_sensor[str(id_sensor_sis)].medir_unidad()
+                return f"Mediciones realizadas en sensor {id_sensor_sis}: {num_lect}"
         return f"Sensor {id_sensor_sis} no está registrado"
     
     def dicc_estad_temp(self):
@@ -80,27 +82,39 @@ class Sistema:
                             lista_temp.append(fahr_a_kelvin(dicc_medicion[unidad]))
                             suma += fahr_a_kelvin(dicc_medicion[unidad])
                             num_mediciones += 1
-        return {"prom": suma / num_mediciones, "max": max(lista_temp), "min": min(lista_temp)}
+        return {"prom": suma / num_mediciones, "max": max(lista_temp), "min": min(lista_temp), "num": num_mediciones}
     
-                    
     def dicc_estad_humedad(self):
         lista_hum = []
         suma = 0
         num_mediciones = 0
         dicc_sens_hum = self.__dicc_sensores_hum
         for sensor in dicc_sens_hum.values():
-            for dicc_medicion in sensor.get_lista_mediciones():
-                for medicion in dicc_medicion.values():
-                    lista_hum.append(medicion)
-                    suma += medicion
-                    num_mediciones += 1
-        return {"prom": suma / num_mediciones, "max": max(lista_hum), "min": min(lista_hum)}
+            for medicion in sensor.get_lista_mediciones():
+                lista_hum.append(medicion)
+                suma += medicion
+                num_mediciones += 1
+        return {"prom": suma / num_mediciones, "max": max(lista_hum), "min": min(lista_hum), "num": num_mediciones}
+    
+    def dicc_estad_mov(self):
+        lista_mov = []
+        num_detecciones = 0
+        num_mediciones = 0
+        dicc_sens_mov = self.__dicc_sensores_mov
+        for sensor in dicc_sens_mov.values():
+            for medicion in sensor.get_lista_mediciones():
+                lista_mov.append(medicion)
+                num_detecciones += medicion
+                num_mediciones += 1
+        return {"detecc_med": num_detecciones / num_mediciones, "num_detect": num_detecciones, "num": num_mediciones}
     
     def reporte(self):
         dicc_estad_temp = self.dicc_estad_temp()
         dicc_estad_hum = self.dicc_estad_humedad()
+        dicc_estad_mov = self.dicc_estad_mov()
         reporte = f"Reporte Temperatura y Humedad \n\n"
-        estad_temp = f"| Promedio Temperatura: {dicc_estad_temp["prom"]} | Máximo Temperatura: {dicc_estad_temp["max"]} | Mínimo Temperatura: {dicc_estad_temp["min"]} |\n"
-        estad_hum = f"| Promedio Humedad: {dicc_estad_hum["prom"]} | Máximo Humedad: {dicc_estad_hum["max"]} | Mínimo Humedad: {dicc_estad_hum["min"]} |\n"
-        reporte += estad_temp + estad_hum
+        estad_temp = f"| Promedio Temperatura: {dicc_estad_temp["prom"]} | Máximo Temperatura: {dicc_estad_temp["max"]} | Mínimo Temperatura: {dicc_estad_temp["min"]} | Número de mediciones: {dicc_estad_temp["num"]} |\n"
+        estad_hum = f"| Promedio Humedad: {dicc_estad_hum["prom"]} | Máximo Humedad: {dicc_estad_hum["max"]} | Mínimo Humedad: {dicc_estad_hum["min"]} | Número de mediciones: {dicc_estad_hum["num"]} |\n"
+        estad_mov = f"| Promedio movimientos por medición: {dicc_estad_mov["detecc_med"]} | Número de movimientos: {dicc_estad_mov["num_detect"]} | Número de mediciones: {dicc_estad_mov["num"]} |\n"
+        reporte += estad_temp + estad_hum + estad_mov
         return reporte

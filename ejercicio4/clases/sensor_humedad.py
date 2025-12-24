@@ -26,5 +26,5 @@ class SensorHumedad(Sensor):
     
     def medir_unidad(self):
         valor_medicion = self.medir() * self.__valor_maximo
-        self.get_lista_mediciones().append({self.__unidad_medida: valor_medicion})
+        self.get_lista_mediciones().append(valor_medicion)
         return valor_medicion
