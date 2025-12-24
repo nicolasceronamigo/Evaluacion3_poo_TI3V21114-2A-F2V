@@ -1,0 +1,41 @@
+from clases.sistema import Sistema
+
+from clases_menu.menu import Menu
+from clases_menu.menu_reporte import MenuReporte
+from clases_menu.menu_medicion import MenuMedicion
+
+#Prueba
+
+sistema1 = Sistema(1)
+
+print(sistema1.crear_sensor_humedad(1))
+print(sistema1.crear_sensor_humedad(2))
+
+print(sistema1.crear_sensor_movimiento(3))
+print(sistema1.crear_sensor_movimiento(4))
+
+print(sistema1.crear_sensor_temperatura(5))
+print(sistema1.crear_sensor_temperatura(6))
+
+print(sistema1.generar_num_lecturas(10))
+
+print(sistema1.reporte())
+
+#Interacción con el usuario
+
+menu_principal = Menu("Menú principal", sistema1)
+menu_reporte = MenuReporte("Menú reporte", sistema1)
+menu_medicion = MenuMedicion("Menú medición", sistema1)
+
+
+menu_principal.agregar_opcion(0, "Salir", menu_principal.salir)
+menu_principal.agregar_opcion(1, "Menú reporte", menu_reporte.ciclo_menu)
+menu_principal.agregar_opcion(2, "Menú medidiciones", menu_medicion.ciclo_menu)
+
+menu_reporte.agregar_opcion(0, "Salir", menu_reporte.salir)
+menu_reporte.agregar_opcion(1, "Generar reporte", menu_reporte.generar_reporte)
+
+menu_medicion.agregar_opcion(0, "Salir", menu_medicion.salir)
+menu_medicion.agregar_opcion(1, "Generar mediciones", menu_medicion.generar_mediciones)
+
+menu_principal.ciclo_menu()
